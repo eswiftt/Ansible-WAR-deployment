@@ -1,6 +1,6 @@
 ---
 - name: War File Deploy tomcat
-  hosts: servera.example.com
+  hosts: localhost
   ignore_errors: yes
   become: yes
   roles:

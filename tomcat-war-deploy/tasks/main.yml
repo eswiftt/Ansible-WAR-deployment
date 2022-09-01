@@ -1,11 +1,15 @@
 ---
 # tasks file for tomcat-war-deploy
+- name: Display hostname
+  debug:
+    var: ansible_fqdn
+
 - name: Test URL status from local machine
   uri:
-    url: "http://servera.example.com:8080"
+    url: "{{ test_url }}"
     status_code: 200
-    register: url_status
-    delegate_to: localhost
+  register: url_status
+  delegate_to: localhost
 
 - name: Display URL status
   debug: 
@@ -20,17 +24,22 @@
 
 - name: Backup the previous version of the WAR files to /tmp directory
   copy:
-    src: /opt/tomcat9/webapps/admin.war
-    dest: /tmp/admin.war
+    src: '{{ item.backup_src }}'
+    dest: '{{ item.backup_dest }}'
     remote_src: yes
+  loop: "{{ backup_files }}"
 
 - name: Remove the previous version of the WAR and expanded directory
   file:
-    path: "{{ item }}"
+    path: "/opt/tomcat9/webapps/{{ item.remove_war }}"
     state: absent
-  loop:
-    - /opt/tomcat9/webapps/admin.war
-    - /opt/tomcat9/webapps/admin
+  loop: "{{ remove_wars }}"
+
+- name: Remove the previous version of the expanded directory
+  file:
+    path: '/opt/tomcat9/webapps/{{ item.remove_file }}'
+    state: absent
+  loop: "{{ remove_files }}"
     
 - name: Verify the previous contents are gone
   command: "ls -al /opt/tomcat9/webapps/"
@@ -47,21 +56,24 @@
 
 - name: copy file to dest
   copy:
-    src: /home/mdtahmeed/Documents/Ansible-tomcat-war-deploy/admin.war
-    dest: /opt/tomcat9/webapps/admin.war
+    src: "{{ item.war_src }}"
+    dest: "{{ item.war_dest }}"
+  loop: "{{ new_wars }}"
+  
 
 - name: set file permissions
   file: 
-    path: /opt/tomcat9/webapps/admin.war
-    mode: 0660
+    path: "{{ item.war_dest }}"
+    mode: 0777
     owner: tomcat 
     group: tomcat
+  loop: "{{ new_wars }}"
       #notify: start tomcat
 
 - name: start tomcat service
   service:
     name: tomcat
-    state: started
+    state: restarted
 
 - name: wait for 20 second for URL to load
   wait_for:
@@ -78,7 +90,7 @@
 
 - name: Get URL status
   uri:  
-    url: "http://servera.example.com:8080/admin/"
+    url: "{{ test_url }}"
     return_content: yes
     status_code: 200
   register: deployment_status
