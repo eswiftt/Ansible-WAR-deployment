@@ -23,59 +23,28 @@ Role Variables
 
   ## Test url status before deployment
 
-      test_url: http://oel9.example.com:8080/admin/
+      test_urls:
+        - test_url: "{{ ansible_facts['fqdn'] }}:8080/admin/"
 
-  ## BACKUP FILES - Mention paths where we want to backup old WAR files. 
-    backup_src will be the source path to war file for backup.
-    backup_dest will be the destination path to store backup war file.
+  ## BACKUP FILES and DELETE OLD WARS and IT'S EXPANED FOLDER - Mention paths where we want to backup old WAR files.
 
-    1. To backup one war file
+    backup_location is where your backedup file will be stored.
+
     Example.
+    backup_location: /tmp/
 
-    backup_files:
-      - backup_src: /opt/tomcat/webapps/admin.war
-        backup_dest: /tmp/admin.war
+    Files will take the backup of old files to backup_location and deletes the old file and also deletes the expanded folder.
 
-    2. To backup multiple war files follow this format.
+    1. To backup and delete one war file
     Example.
-
-    backup_files:
-      - backup_src: /opt/tomcat/webapps/admin.war
-        backup_dest: /tmp/admin.war
-      - backup_src: /opt/tomcat/webapps/ROOT.war
-        backup_dest: /tmp/ROOT.war
-
-  ## DELETE FILES - Mention the war files to remove
-    remove_war variable deletes war files. if given in list removes multiple wars.
-    
-    1. To remove one war file
-    Example.
-
-    remove_wars:
-      - remove_war: admin.war
+    files:
+      - file_name: admin
 
     2. To remove multiple war files follow this format.
     Example.
-
-    remove_wars:
-      - remove_war: admin.war
-      - remove_war: ROOT.war
-
-  ## DELETE FOLDERS - Mention the expanded folders to remove
-    remove_folder variable deletes expanded war directory. if given in list removes multiple expanded war directory.
-    
-    1. To remove one war file
-    Example.
-
-    remove_folders:
-      - remove_folder: admin
-
-    2. To remove multiple expanded folders follow this format.
-    Example.
-
-    remove_folders:
-      - remove_folder: admin
-      - remove_folder: ROOT 
+    files:
+      - file_name: admin
+      - file_name: ROOT
     
   ## NEW FILES - Mention the source path to new war file to deploy
     war_src variable copies the new war file from the given location to war_dest variable which is tomcat location to deploy new war file.
@@ -85,16 +54,16 @@ Role Variables
 
     new_wars:
       - war_src: admin.war
-        war_dest: /opt/tomcat/webapps/admin.war
+        war_dest: admin.war
 
     2. To deploy multiple war files follow this format.
     Example.
 
     new_wars:
       - war_src: admin.war
-        war_dest: /opt/tomcat/webapps/admin.war
+        war_dest: admin.war
       - war_src: ROOT.war
-        war_dest: /opt/tomcat/webapps/ROOT.war
+        war_dest: ROOT.war
 
 
 Example Playbook
@@ -102,22 +71,20 @@ Example Playbook
 
 An example of how to use this role (for instance, with variables passed in as parameters) is always nice for use:
 
-    - hosts: servers
-      roles:
-        - role: Ansible-WAR-deployment
-          vars:
-            test_urls:
-              - test_url: http://oel9.example.com:8080/admin/
-            backup_files:
-              - backup_src: /opt/tomcat/webapps/admin.war
-                backup_dest: /tmp/admin.war 
-            remove_wars:
-              - remove_war: admin.war
-            remove_folders:
-              - remove_folder: admin
-            new_wars:
-              - war_src: admin.war
-                war_dest: /opt/tomcat/webapps/admin.war
+- hosts: servers
+  remote_user: tomcat
+  ignore_errors: yes
+  become: yes
+  roles:
+    - role: Ansible-WAR-deployment
+      vars:
+        tomcat_location: /opt/tomcat9/webapps/
+        backup_location: /tmp/
+        files:
+          - file_name: admin
+        new_wars:
+          - war_src: admin.war
+            war_dest: admin.war
 License
 -------
 

@@ -1,10 +1,13 @@
 ---
 # defaults file for tomcat9deploywar
+# these are the variables that will be used if there is no user variable defined.
 
-# defaults file for tomcat9-war-deploy
-#test_urls:
-#  - test_url: http://oel9.example.com:8080/admin/
-#  - test_url: http://oel9.example.com:8080/
+###### Test URL
+# This variable tests the
+
+test_urls:
+  - test_url: "{{ ansible_facts['fqdn'] }}:8080/"
+  - test_url: "{{ ansible_facts['fqdn'] }}:8080/admin/"
 
 # Mention here your tomcat9 location to wars
 
@@ -14,13 +17,12 @@ tomcat_location: /opt/tomcat9/webapps/
 ## Note Do not mention .war extension in file_name
 
 backup_location: /tmp/
+
 files:
   - file_name: admin
-  - file_name: ROOT
 
 # Place where we need to mention the new war files location to fetch
+
 new_wars:
   - war_src: admin.war
     war_dest: admin.war
-  - war_src: ROOT.war
-    war_dest: ROOT.war
