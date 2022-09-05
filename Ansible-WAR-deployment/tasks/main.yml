@@ -18,8 +18,7 @@
   service:
     name: tomcat
     state: stopped
-  #when: url_status.status == 200
-
+    
 - name: Backup the previous version of the WAR files to /tmp directory
   copy:
     src: '{{ tomcat_location }}{{ item.file_name }}.war'

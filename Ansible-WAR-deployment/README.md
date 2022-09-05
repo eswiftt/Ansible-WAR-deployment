@@ -28,7 +28,7 @@ Role Variables
 
   ## BACKUP FILES and DELETE OLD WARS and IT'S EXPANED FOLDER - Mention paths where we want to backup old WAR files.
 
-    backup_location is where your backedup file will be stored.
+    backup_location is where you take your file backup.
 
     Example.
     backup_location: /tmp/

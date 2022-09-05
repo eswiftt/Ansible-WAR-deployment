@@ -12,10 +12,6 @@
         backup_location: /tmp/
         files:
           - file_name: admin
-          - file_name: ROOT
-        
         new_wars:
           - war_src: admin.war
             war_dest: admin.war
-          - war_src: ROOT.war
-            war_dest: ROOT.war
