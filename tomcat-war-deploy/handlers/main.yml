@@ -1,7 +1,0 @@
----
-# handlers file for tomcat-war-deplo
-- name: start tomcat 
-  service:
-    name: tomcat
-    state: startedy
-

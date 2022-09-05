@@ -1,7 +1,0 @@
----
-- name: War File Deploy tomcat
-  hosts: localhost
-  ignore_errors: yes
-  become: yes
-  roles:
-    - tomcat-war-deploy
