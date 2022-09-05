@@ -1,0 +1,26 @@
+---
+# defaults file for tomcat9deploywar
+
+# defaults file for tomcat9-war-deploy
+#test_urls:
+#  - test_url: http://oel9.example.com:8080/admin/
+#  - test_url: http://oel9.example.com:8080/
+
+# Mention here your tomcat9 location to wars
+
+tomcat_location: /opt/tomcat9/webapps/
+
+## files backup location and file names
+## Note Do not mention .war extension in file_name
+
+backup_location: /tmp/
+files:
+  - file_name: admin
+  - file_name: ROOT
+
+# Place where we need to mention the new war files location to fetch
+new_wars:
+  - war_src: admin.war
+    war_dest: admin.war
+  - war_src: ROOT.war
+    war_dest: ROOT.war

@@ -1,0 +1,21 @@
+- hosts: localhost
+  remote_user: tomcat
+  ignore_errors: yes
+  become: yes
+  roles:
+    - role: Ansible-WAR-deployment
+      vars:
+        test_urls:
+          - test_url: "{{ ansible_facts['fqdn'] }}:8080/"
+          - test_url: "{{ ansible_facts['fqdn'] }}:8080/admin/"
+        tomcat_location: /opt/tomcat9/webapps/
+        backup_location: /tmp/
+        files:
+          - file_name: admin
+          - file_name: ROOT
+        
+        new_wars:
+          - war_src: admin.war
+            war_dest: admin.war
+          - war_src: ROOT.war
+            war_dest: ROOT.war
