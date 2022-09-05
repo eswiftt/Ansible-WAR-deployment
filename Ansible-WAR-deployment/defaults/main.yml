@@ -1,0 +1,28 @@
+---
+# defaults file for tomcat9deploywar
+# these are the variables that will be used if there is no user variable defined.
+
+###### Test URL
+# This variable tests the
+
+test_urls:
+  - test_url: "{{ ansible_facts['fqdn'] }}:8080/"
+  - test_url: "{{ ansible_facts['fqdn'] }}:8080/admin/"
+
+# Mention here your tomcat9 location to wars
+
+tomcat_location: /opt/tomcat9/webapps/
+
+## files backup location and file names
+## Note Do not mention .war extension in file_name
+
+backup_location: /tmp/
+
+files:
+  - file_name: admin
+
+# Place where we need to mention the new war files location to fetch
+
+new_wars:
+  - war_src: admin.war
+    war_dest: admin.war

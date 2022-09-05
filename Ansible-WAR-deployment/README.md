@@ -96,9 +96,3 @@ Owner
 Mohammed Tahmeed
 
 Red Hat Certified Engineer
-
-ID: MT094795
-
-System Engineer I
-
-CernerWorks CWx Team POE-Synergy

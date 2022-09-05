@@ -1,0 +1,7 @@
+---
+# handlers file for tomcatdeploywar
+
+- name: start tomcat 
+  service:
+    name: tomcat
+    state: started
