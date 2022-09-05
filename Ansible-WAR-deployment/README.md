@@ -71,20 +71,20 @@ Example Playbook
 
 An example of how to use this role (for instance, with variables passed in as parameters) is always nice for use:
 
-- hosts: servers
-  remote_user: tomcat
-  ignore_errors: yes
-  become: yes
-  roles:
-    - role: Ansible-WAR-deployment
-      vars:
-        tomcat_location: /opt/tomcat9/webapps/
-        backup_location: /tmp/
-        files:
-          - file_name: admin
-        new_wars:
-          - war_src: admin.war
-            war_dest: admin.war
+    - hosts: servers
+      remote_user: tomcat
+      ignore_errors: yes
+      become: yes
+      roles:
+        - role: Ansible-WAR-deployment
+          vars:
+            tomcat_location: /opt/tomcat9/webapps/
+            backup_location: /tmp/
+            files:
+              - file_name: admin
+            new_wars:
+              - war_src: admin.war
+                war_dest: admin.war
 License
 -------
 
